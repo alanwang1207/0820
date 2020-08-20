@@ -138,6 +138,8 @@ function getProducts() {
 
 ?>
 
+json_encode()將資料轉換成json格式
+
 
 2.3 在瀏覽器分別試連下列網址:
 
