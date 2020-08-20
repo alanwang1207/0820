@@ -11,6 +11,7 @@ class App {
         $methodName = $url[1];
         // $controller->$methodName($url[2]);//使用controller呼叫方法
         unset($url[0]); unset($url[1]);
+        // var_dump($url);
         $params = $url ? array_values($url) : Array();
         call_user_func_array(Array($controller, $methodName), $params);//控制器名 方法名 參數為可選 看是否方法需要參數
         // var_dump($params);
