@@ -86,10 +86,10 @@ $app = new App();
 4.2 滑鼠右鍵點按 EasyMVC 資料夾， New File，
     檔名: .htaccess，檔案內容:
 
-RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+RewriteEngine on 找尋檔案中的file跟directory
+RewriteCond %{REQUEST_FILENAME} !-f 找file
+RewriteCond %{REQUEST_FILENAME} !-d 找directory
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L] //找不到的由瀏覽器來處理
 
 
 4.3 重新再用瀏覽器測試下列網址: (應該會出現 OK 字樣)
