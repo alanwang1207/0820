@@ -10,7 +10,9 @@ Lab: 以 XPath 找出目標節點
 
 
 1.2	滑鼠右鍵點按第一則快訊，從快捷功能表選擇最後一項:「檢查」
-
+//*[@id="news_box3"]/div[2]/ul
+//*[@id="news_box3"]/div[2]/ul/li[1]
+//*[@id="Content_rptList_hlLink_0"]/div/h3
 
 1.3	滑鼠右鍵點按 <ul> 裏頭的第個 <li>，
     從快捷功能表選擇「Copy」|「Copy XPath」。

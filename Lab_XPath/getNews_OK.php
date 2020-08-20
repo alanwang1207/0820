@@ -16,7 +16,7 @@ $pageContent = curl_exec($ch);
 curl_close($ch);
 
 $doc = new DOMDocument();
-libxml_use_internal_errors(true);
+libxml_use_internal_errors(true);//無視錯誤
 $doc->loadHTML($pageContent);
 
 $xpath = new DOMXPath($doc);
@@ -25,6 +25,12 @@ foreach ($entries as $entry)
 {
     $title = $xpath->query("./a/div/h3", $entry);
     echo "Title：" . $title->item(0)->nodeValue . "<br>";
+    $p = $xpath->query("./a/div/p", $entry);
+    echo "簡介：" . $p->item(0)->nodeValue . "<br>";
+    $date = $xpath->query("./a/div/span", $entry);
+    echo "日期：" . $date->item(0)->nodeValue . "<br>";
+    // $href = $xpath->query("./a/@href", $entry);
+    // echo "超連結：" . $href->item(0)->nodeValue . "<br>";
 }
 
 ?>

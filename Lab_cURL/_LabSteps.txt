@@ -129,7 +129,7 @@ echo htmlspecialchars($output);
 
 
 2-5 preg_match() 函式的功能是什麼?
-
+preg_match 函数用于执行一个正则表达式匹配。
 
 
 
