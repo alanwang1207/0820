@@ -3,15 +3,15 @@
 // 物件導向與MVC課程時，再來寫進化版
 
 $method = $_SERVER['REQUEST_METHOD'];
-$url = explode("/", rtrim($_GET["url"], "/"));
-//資料庫連線
+$url = explode("/", rtrim($_GET["url"], "/") );
+
 $dbLink = @mysqli_connect("localhost", "root", "root") or die(mysqli_connect_error());
 mysqli_query($dbLink, "set names utf8");
 mysqli_select_db($dbLink, "apiDB");
 
 switch ($method . " " . $url[0]) {
     case "POST products":
-        echo "creating ...";
+        insertProduct();
         break;
     case "GET products":
         if (isset($url[1]))
@@ -20,10 +20,10 @@ switch ($method . " " . $url[0]) {
             getProducts();
         break;
     case "PUT products":
-        echo 'update ...';
+        updateProduct($url[1]);
         break;
     case "DELETE products":
-        echo 'delete ...';
+        deleteProduct($url[1]);
         break;
     default:
         echo "Thank you";
@@ -31,29 +31,87 @@ switch ($method . " " . $url[0]) {
 mysqli_close($dbLink);
 
 
-function getProductById($id)
-{
+function getProductById($id) {
     if (!is_numeric($id))
-        die("id is not a number.");
+    	die( "id is not a number." );
 
     global $dbLink;
-    $result = mysqli_query(
-        $dbLink,
-        "select * from products where productId = " . $id
-    );
+    $result = mysqli_query($dbLink, 
+      "select * from products where productId = " . $id );
     $row = mysqli_fetch_assoc($result);
     echo json_encode($row);
 }
 
-function getProducts()
-{
+
+function getProducts() {
     global $dbLink;
-    $result = mysqli_query(
-        $dbLink,
-        "select * from products"
-    );
+    $result = mysqli_query($dbLink, 
+      "select * from products");
+    echo "[";
     while ($row = mysqli_fetch_assoc($result)) {
-        $datalist[] = $row;
+        echo json_encode($row);
     }
-    echo json_encode($datalist);
+    echo "]";
 }
+
+
+function insertProduct() {
+    global $dbLink;
+    
+    $productName = $_POST["productName"];
+    $price       = $_POST["price"];
+    $quantity    = $_POST["quantity"];
+    $commandText = 
+        "insert into products "
+      . "set productName = '{$productName}' "
+      . "  , price       = '{$price}'"
+      . "  , quantity    = '{$quantity}'";
+    $result = mysqli_query($dbLink, $commandText); 
+    
+    echo $result;
+}
+
+
+function updateProduct($id) {
+    if (! isset ( $id ))
+    	die ( "Parameter id not found." );
+    if (! is_numeric ( $id ))
+        die ( "id not a number." );
+
+    global $dbLink;
+    
+    parse_str(file_get_contents('php://input'), $putData);
+    //echo json_encode($putData);
+    //return;
+    $productName = $putData["productName"];
+    $price       = $putData["price"];
+    $quantity    = $putData["quantity"];
+    $commandText = 
+        "update products "
+      . "set productName = '{$productName}' "
+      . "  , price       = '{$price}'"
+      . "  , quantity    = '{$quantity}'"
+      . "  where productId = {$id}";
+    mysqli_query($dbLink, $commandText); 
+    
+    echo "Updated: " . $id;
+}
+
+
+function deleteProduct($id) {
+    if (! isset ( $id ))
+    	die ( "Parameter id not found." );
+    if (! is_numeric ( $id ))
+        die ( "id not a number." );
+
+    global $dbLink;
+    
+    $commandText = 
+        "delete from products "
+      . "  where productId = {$id}";
+    mysqli_query($dbLink, $commandText); 
+    
+    echo "Deleted: " . $id;
+}
+
+?>

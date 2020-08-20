@@ -5,7 +5,7 @@
 $method = $_SERVER['REQUEST_METHOD'];
 $url = explode("/", rtrim($_GET["url"], "/") );
 
-$dbLink = @mysqli_connect("localhost", "root", "") or die(mysqli_connect_error());
+$dbLink = @mysqli_connect("localhost", "root", "root") or die(mysqli_connect_error());
 mysqli_query($dbLink, "set names utf8");
 mysqli_select_db($dbLink, "apiDB");
 
